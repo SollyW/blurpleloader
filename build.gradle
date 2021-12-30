@@ -1,5 +1,6 @@
 plugins {
     id "java-library"
+    id "maven-publish"
 }
 
 group = "com.projectblurple"
@@ -12,4 +13,10 @@ repositories {
 
 dependencies {
     compileOnly "net.fabricmc:fabric-loader:${project.loader_version}"
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
 }
