@@ -1,0 +1,15 @@
+plugins {
+    id "java-library"
+}
+
+group = "com.projectblurple"
+archivesBaseName = "blurpleloader"
+version = project.blurpleloader_version
+
+repositories {
+    maven { url "https://maven.fabricmc.net" }
+}
+
+dependencies {
+    compileOnly "net.fabricmc:fabric-loader:${project.loader_version}"
+}
