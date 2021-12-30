@@ -1,3 +1,4 @@
+//file:noinspection All
 plugins {
     id "java-library"
     id "maven-publish"
@@ -24,7 +25,8 @@ java {
 
 publishing {
     publications {
-        //noinspection GroovyAssignabilityCheck
-        mavenJava(MavenPublication)
+        mavenJava(MavenPublication) {
+            from components.java
+        }
     }
 }
