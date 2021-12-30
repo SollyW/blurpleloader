@@ -8,7 +8,8 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 public class BlurpleGameProvider extends MinecraftGameProvider {
     @Override
     public boolean isEnabled() {
-        return true;
+        throw new RuntimeException("");
+//        return true;
     }
 
     @Override
