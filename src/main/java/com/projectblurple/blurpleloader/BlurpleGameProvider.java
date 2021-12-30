@@ -12,7 +12,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
 
     @Override
     public void launch(ClassLoader loader) {
-        Log.info(LogCategory.GAME_PROVIDER, "Blurple game provider loaded");
+        Log.info(LogCategory.GAME_PROVIDER, "Blurple game provider loaded; updated");
         super.launch(loader);
     }
 }
