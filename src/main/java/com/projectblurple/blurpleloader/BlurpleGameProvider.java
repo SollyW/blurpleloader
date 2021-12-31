@@ -9,6 +9,7 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -53,7 +54,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
             Files.list(modDir).forEach(path -> {
                 String filename = path.getFileName().toString();
                 if (!manifest.containsKey(filename)) {
-                    Log.info(LogCategory.GAME_PROVIDER, "Deleting " + filename);
+                    Log.info(LogCategory.GAME_PROVIDER, "Marking " + filename + " for deletion");
                     filesToDelete.add(path);
                 } else manifest.remove(filename);
             });
@@ -78,7 +79,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
                     }
                 } catch (IOException e) {
                     Log.error(LogCategory.GAME_PROVIDER, "Error downloading mod: " + file);
-                    e.printStackTrace();
+                    throw new UncheckedIOException("Error downloading mod " + file, e);
                 }
             }
         }
@@ -86,7 +87,11 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         Log.info(LogCategory.GAME_PROVIDER, "Done checking for mods to download. Deleting old mods...");
 
         for (Path path : filesToDelete) {
-            Log.info(LogCategory.GAME_PROVIDER, path.toFile().delete() + "");
+            Log.info(LogCategory.GAME_PROVIDER, "Deleting " + path);
+            if (!path.toFile().delete()) {
+                Log.error(LogCategory.GAME_PROVIDER, "Error deleting mod: " + path);
+                throw new RuntimeException("Failed to delete file " + path);
+            }
         }
 
         Log.info(LogCategory.GAME_PROVIDER, "Mod updates finished.");
