@@ -30,7 +30,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         Log.info(LogCategory.GAME_PROVIDER, "Running update check...");
 
         final List<Path> filesToDelete = new ArrayList<>();
-        final Path modDir = FabricLoader.getInstance().getGameDir().resolve("mods");
+        final Path modDir = getLaunchDirectory().resolve("mods");
         final Map<String, URL> manifest = new HashMap<>();
 
         try {
