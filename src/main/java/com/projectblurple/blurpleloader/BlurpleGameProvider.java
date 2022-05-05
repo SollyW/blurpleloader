@@ -35,7 +35,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         final Map<String, URL> manifest = new HashMap<>();
 
         try {
-            var manifestString = new String(
+            String manifestString = new String(
                     new URL("https://raw.githubusercontent.com/SollyW/blurplepack/master/mod_manifest")
                             .openStream()
                             .readAllBytes());
@@ -47,7 +47,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
             }
         } catch (IOException e) {
             Log.error(LogCategory.GAME_PROVIDER, "Error fetching manifest file");
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
 
         try {
@@ -60,7 +60,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
             });
         } catch (IOException e) {
             Log.error(LogCategory.GAME_PROVIDER, "Error listing mods from mod dir: " + modDir);
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
 
         Log.info(LogCategory.GAME_PROVIDER, "Done checking files. Checking for mods to download...");
