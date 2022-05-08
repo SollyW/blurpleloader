@@ -1,6 +1,5 @@
 package com.projectblurple.blurpleloader;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider;
 import net.fabricmc.loader.impl.launch.FabricLauncher;
 import net.fabricmc.loader.impl.util.log.Log;
@@ -26,6 +25,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         return true;
     }
 
+    @SuppressWarnings("resource")
     @Override
     public void initialize(FabricLauncher launcher) {
         Log.info(LogCategory.GAME_PROVIDER, "Running update check...");
@@ -51,6 +51,7 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         }
 
         try {
+            if (!Files.exists(modDir)) Files.createDirectory(modDir);
             Files.list(modDir).forEach(path -> {
                 String filename = path.getFileName().toString();
                 if (!manifest.containsKey(filename)) {
