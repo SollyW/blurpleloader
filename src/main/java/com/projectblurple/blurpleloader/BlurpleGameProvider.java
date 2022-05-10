@@ -1,7 +1,9 @@
 package com.projectblurple.blurpleloader;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider;
 import net.fabricmc.loader.impl.launch.FabricLauncher;
+import net.fabricmc.loader.impl.util.SystemProperties;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 
@@ -14,10 +16,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BlurpleGameProvider extends MinecraftGameProvider {
     @Override
@@ -96,6 +95,23 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
         }
 
         Log.info(LogCategory.GAME_PROVIDER, "Mod updates finished.");
+
+        custom:
+        {
+            final Path customModDir = getLaunchDirectory().resolve("usermods");
+            if (!Files.isDirectory(modDir)) break custom;
+
+            File[] mods = customModDir.toFile().listFiles();
+            if (mods == null) break custom;
+            StringBuilder builder = new StringBuilder();
+            Arrays.stream(mods)
+                    .forEach(file -> builder.append(File.pathSeparatorChar)
+                            .append(file.getAbsolutePath()));
+
+            builder.deleteCharAt(0);
+
+            System.setProperty(SystemProperties.ADD_MODS, builder.toString());
+        }
 
         super.initialize(launcher);
     }
