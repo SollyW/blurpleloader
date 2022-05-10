@@ -103,6 +103,11 @@ public class BlurpleGameProvider extends MinecraftGameProvider {
 
             File[] mods = customModDir.toFile().listFiles();
             if (mods == null) break custom;
+
+            for (File mod : mods) {
+                Log.info(LogCategory.GAME_PROVIDER, "Loading user-provided mod " + mod.getName());
+            }
+
             StringBuilder builder = new StringBuilder();
             Arrays.stream(mods)
                     .forEach(file -> builder.append(File.pathSeparatorChar)
